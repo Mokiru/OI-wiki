@@ -73,6 +73,42 @@ trie 的结构非常好懂，我们用 $\delta(u,c)$ 表示结点 $u$ 的 $c$ �
                 p = self.nex[p][c]
             return self.exist[p]
     ```
+使用类封装：
+
+=== "C++"
+    ```cpp
+    class Trie {
+    private:
+        vector<Trie*> children;
+        bool isEnd;
+    public:
+        Trie() : children(26), isEnd(false) {}
+    
+        void insert(string word) {
+            Trie* node = this;
+            for (char ch : word) {
+                ch -= 'a';
+                if (node->children[ch] == nullptr) {
+                    node->children[ch] = new Trie();
+                }
+                node = node->children[ch];
+            }
+            node->isEnd = true;
+        }
+
+        bool search(string word) {
+            Trie* node = this;
+    		for (char ch : word) {
+    			ch -= 'a';
+    			if (node->children[ch] == nullptr) {
+    				return false;
+    			}
+    			node = node->children[ch];
+    		}
+    		return node->isEnd;
+        }
+    };
+    ```
 
 ## 应用
 
